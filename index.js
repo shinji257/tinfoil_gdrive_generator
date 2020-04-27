@@ -12,6 +12,7 @@ flags.uploadDrive = getArgument('uploadDrive', false);
 flags.oldFormat = getArgument('oldFormat', true, false);
 flags.makeTfl = getArgument('makeTfl', true, false);
 flags.keepMissingId = getArgument('keepMissingId', true, false);
+flags.apiKey = getArgument('apiKey', false);
 
 function getArgument(name, isFlag, defaultValue = null) {
 	if (progArgs.includes(`-${name}`)) {
@@ -377,6 +378,10 @@ async function addToFile(folderId, driveId = null) {
 
 					jsonFile.url = `gdrive:${flags.auth ? '/' : ''}${file.id}#${titleid}${path.extname(file.name)}`;
 				}
+				
+                                if (flags.apiKey) {
+                                        jsonFile.googleApiKey = flags.apiKey;
+                                }
 
 				if (file.permissionIds.filter(val => /\D{1}/g.test(val)).length > 0 && flags.auth) {
 					const permsToDelete = file.permissionIds.filter(val => val.length > 20);
